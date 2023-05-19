@@ -1,10 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import RegistrationScreen from "./Screens/RegistrationScreen";
+import backgroundImage from "./images/backgroundImage.png";
+import LoginScreen from "./Screens/LoginScreen";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <ImageBackground source={backgroundImage} style={styles.background}>
+        {/* <RegistrationScreen /> */}
+        <LoginScreen />
+      </ImageBackground>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +19,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    position: "relative",
+  },
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
