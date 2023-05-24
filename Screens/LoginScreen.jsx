@@ -7,9 +7,16 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
+  ImageBackground,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
+import backgroundImage from "../assets/images/backgroundImage.png";
+import { useNavigation } from "@react-navigation/native";
 export default LoginScreen = () => {
+  const navigation = useNavigation();
+
   const [passwordView, setPasswordView] = useState(true);
   const handlePress = () => {
     setPasswordView(!passwordView);
@@ -42,77 +49,83 @@ export default LoginScreen = () => {
     console.log("Email:", email, "Password:", password);
   };
   return (
-    <View
-      style={styles.container}
-      accessibilityIgnoresInvertColors={true}
-      ref={this._captureRef}
-    >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" && "padding"}
-        keyboardVerticalOffset={440}
-      >
-        <View
-        // style={{ ...styles.keyBox, marginBottom: isFocused1 ? 15 : 100, marginBottom: isFocused2 ? 15 : 100}}
-        >
-          <Text style={styles.titleForm}>Войти</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <ImageBackground source={backgroundImage} style={styles.background}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
+            <View style={styles.form}>
+              <Text style={styles.titleForm}>Войти</Text>
+              <TextInput
+                style={inputStyles1}
+                placeholder="Адрес электронной почты"
+                placeholderTextColor="#BDBDBD"
+                onFocus={handleFocus1}
+                onBlur={handleBlur1}
+                value={email}
+                onChangeText={setEmail}
+              />
+              <View>
+                <TextInput
+                  style={inputStyles2}
+                  placeholder="Пароль"
+                  placeholderTextColor="#BDBDBD"
+                  onFocus={handleFocus2}
+                  onBlur={handleBlur2}
+                  autoComplete="password"
+                  secureTextEntry={passwordView}
+                  value={password}
+                  onChangeText={setPassword}
+                ></TextInput>
+                <Text
+                  style={styles.showPassword}
+                  dataDetectorType="link"
+                  onPress={handlePress}
+                >
+                  Показать
+                </Text>
+              </View>
 
-          <TextInput
-            style={inputStyles1}
-            placeholder="Адрес электронной почты"
-            placeholderTextColor="#BDBDBD"
-            onFocus={handleFocus1}
-            onBlur={handleBlur1}
-            value={email}
-            onChangeText={setEmail}
-          />
-          <View>
-            <TextInput
-              style={inputStyles2}
-              placeholder="Пароль"
-              placeholderTextColor="#BDBDBD"
-              onFocus={handleFocus2}
-              onBlur={handleBlur2}
-              autoComplete="password"
-              secureTextEntry={passwordView}
-              value={password}
-              onChangeText={setPassword}
-            ></TextInput>
-            <Text
-              style={styles.showPassword}
-              dataDetectorType="link"
-              onPress={handlePress}
-            >
-              Показать
-            </Text>
-          </View>
-
-          <Pressable style={styles.button} onPress={onLogin}>
-            <Text style={styles.textButton}>Войти</Text>
-          </Pressable>
-          <Text dataDetectorType="link" style={styles.textButtonLogIn}>
-            Нет аккаунта? Зарегистрироваться
-          </Text>
-        </View>
-      </KeyboardAvoidingView>
-    </View>
+              <Pressable style={styles.button} onPress={onLogin}>
+                <Text style={styles.textButton}>Войти</Text>
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate("Registration")}>
+                <Text style={styles.textButtonLogIn}>
+                  Нет аккаунта? Зарегистрироваться
+                </Text>
+              </Pressable>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.6,
-    backgroundColor: "#fff",
+    flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
     position: "relative",
+  },
+  background: {
+    width: "100%",
+    height: "100%",
+  },
+  form: {
+    marginTop: 320,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    top: 168,
+    backgroundColor: "#ffffff",
+    height: 489,
+    alignItems: "center",
   },
-
   titleForm: {
     marginTop: 32,
     color: "#212121",
-    textAlign: "center",
     fontSize: 30,
     marginBottom: 33,
     fontFamily: "Roboto-Medium",
@@ -139,7 +152,7 @@ const styles = StyleSheet.create({
     bottom: 32,
     left: 255,
     fontSize: 16,
-    fontFamily: "Roboto-Regular"
+    fontFamily: "Roboto-Regular",
   },
   button: {
     backgroundColor: "#FF6C00",
@@ -161,6 +174,5 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     color: "#1B4371",
     fontSize: 16,
-    left: 40,
   },
 });

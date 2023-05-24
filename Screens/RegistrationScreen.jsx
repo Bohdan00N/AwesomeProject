@@ -8,15 +8,20 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ImageBackground,
 } from "react-native";
-
-import Add from "../images/add.svg";
-import Del from "../images/del.svg";
+import backgroundImage from "../assets/images/backgroundImage.png";
+import Add from "../assets/images/add.svg";
+import Del from "../assets/images/del.svg";
+import { useNavigation } from "@react-navigation/native";
 
 export default RegistrationScreen = () => {
+  //
+  const navigation = useNavigation();
   const [passwordView, setPasswordView] = useState(true);
-  const [avatarSource, setAvatarSource] = useState(null);
-
+  const [avatarSource, setAvatarSource] = useState();
   const addImg = () => {};
   const delImg = () => {
     setAvatarSource(null);
@@ -67,86 +72,100 @@ export default RegistrationScreen = () => {
   };
 
   return (
-    <View
-      style={styles.container}
-      accessibilityIgnoresInvertColors={true}
-      ref={this._captureRef}
-    >
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" && "padding"}>
-        {/* <View style={{ ...styles.keyBox, marginBottom: isFocused1 ? 15 : 100 }}> */}
-          <View style={styles.avatarForm}>
-            <Image source={avatarSource} style={styles.tinyAvatar} />
-            {avatarSource ? (
-              <Pressable style={styles.addPhoto} onPress={delImg}>
-                <Del />
-              </Pressable>
-            ) : (
-              <Pressable onPress={addImg} style={styles.addPhoto}>
-                <Add />
-              </Pressable>
-            )}
-          </View>
-          <Text style={styles.titleForm}>Регистрация</Text>
-          <TextInput
-            style={inputStyles1}
-            placeholder="Имя"
-            placeholderTextColor="#BDBDBD"
-            onFocus={handleFocus1}
-            onBlur={handleBlur1}
-            value={name}
-            onChangeText={setName}
-          />
-          <TextInput
-            style={inputStyles2}
-            placeholder="Адрес электронной почты"
-            placeholderTextColor="#BDBDBD"
-            onFocus={handleFocus2}
-            onBlur={handleBlur2}
-            value={email}
-            onChangeText={setEmail}
-          />
-          <View>
-            <TextInput
-              style={inputStyles3}
-              placeholder="Пароль"
-              placeholderTextColor="#BDBDBD"
-              onFocus={handleFocus3}
-              onBlur={handleBlur3}
-              autoComplete="password"
-              secureTextEntry={passwordView}
-              value={password}
-              onChangeText={setPassword}
-            ></TextInput>
-            <Text
-              style={styles.showPassword}
-              dataDetectorType="link"
-              onPress={handlePress}
-            >
-              Показать
-            </Text>
-          </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <ImageBackground source={backgroundImage} style={styles.background}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
+            <View style={styles.form}>
+              <View style={styles.avatarForm}>
+                <Image source={avatarSource} style={styles.tinyAvatar} />
+                {avatarSource ? (
+                  <Pressable style={styles.delPhoto} onPress={delImg}>
+                    <Del />
+                  </Pressable>
+                ) : (
+                  <Pressable style={styles.addPhoto} onPress={addImg}>
+                    <Add />
+                  </Pressable>
+                )}
+              </View>
+              <Text style={styles.titleForm}>Регистрация</Text>
+              <TextInput
+                style={inputStyles1}
+                placeholder="Имя"
+                placeholderTextColor="#BDBDBD"
+                onFocus={handleFocus1}
+                onBlur={handleBlur1}
+                value={name}
+                onChangeText={setName}
+              />
+              <TextInput
+                style={inputStyles2}
+                placeholder="Адрес электронной почты"
+                placeholderTextColor="#BDBDBD"
+                onFocus={handleFocus2}
+                onBlur={handleBlur2}
+                value={email}
+                onChangeText={setEmail}
+              />
+              <View>
+                <TextInput
+                  style={inputStyles3}
+                  placeholder="Пароль"
+                  placeholderTextColor="#BDBDBD"
+                  onFocus={handleFocus3}
+                  onBlur={handleBlur3}
+                  autoComplete="password"
+                  secureTextEntry={passwordView}
+                  value={password}
+                  onChangeText={setPassword}
+                ></TextInput>
+                <Text
+                  style={styles.showPassword}
+                  dataDetectorType="link"
+                  onPress={handlePress}
+                >
+                  Показать
+                </Text>
+              </View>
 
-          <Pressable style={styles.button} onPress={onLogin}>
-            <Text style={styles.textButton}>Зарегистрироваться</Text>
-          </Pressable>
-          <Text dataDetectorType="link" style={styles.textButtonLogIn}>
-            Уже есть аккаунт? Войти
-          </Text>
-        {/* </View> */}
-      </KeyboardAvoidingView>
-    </View>
+              <Pressable style={styles.button} onPress={onLogin}>
+                <Text style={styles.textButton}>Зарегистрироваться</Text>
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate("Login")}>
+                <Text style={styles.textButtonLogIn}>
+                  Уже есть аккаунт? Войти
+                </Text>
+              </Pressable>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.67,
-    backgroundColor: "#fff",
+    flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
     position: "relative",
+  },
+  background: {
+    width: "100%",
+    height: "100%",
+  },
+  form: {
+    marginTop: 263,
+    backgroundColor: "#ffffff",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    top: 138,
+    height: 549,
+    alignItems: "center",
   },
   tinyAvatar: {
     width: 120,
@@ -154,20 +173,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
     bottom: 60,
-    left: 110,
   },
   addPhoto: {
     width: 25,
     height: 25,
     position: "absolute",
-    right: 101,
+    left: 107,
     top: 20,
+  },
+  delPhoto: {
+    width: 25,
+    height: 25,
+    position: "absolute",
+    left: 100,
+    top: 15,
   },
   titleForm: {
     fontFamily: "Roboto-Medium",
     marginTop: -28,
     color: "#212121",
-    textAlign: "center",
     fontSize: 30,
     marginBottom: 33,
   },
@@ -215,6 +239,5 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     color: "#1B4371",
     fontSize: 16,
-    left: 75,
   },
 });
