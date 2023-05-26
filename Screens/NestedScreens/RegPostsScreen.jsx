@@ -17,12 +17,12 @@ export default function RegPostsScreen() {
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
   const { params } = useRoute();
-  const [currentLocation, setCurrentLocation] = useState(null);
-  
+//   const [currentLocation, setCurrentLocation] = useState(null);
+
   useEffect(() => {
       if (params) {
           setPosts((prevState) => [...prevState, params]);
-        }
+        }console.log(params);
     }, [params]);
     
 
@@ -54,7 +54,7 @@ export default function RegPostsScreen() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.commentsContainer}
-                onPress={() => navigation.navigate("Map", { currentLocation })}
+                onPress={() => navigation.navigate("Map", { currentLocation: params.currentLocation })}
               >
                 <Ionicons
                   name="ios-location-outline"

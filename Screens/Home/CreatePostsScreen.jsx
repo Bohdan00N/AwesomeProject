@@ -57,8 +57,7 @@ export function CreatePostsScreen() {
   const handleReset = () => {
     setName("");
     setPhoto("");
-    setCurrentLocation("");
-  };
+    };
 
   const handleSubmit = () => {
     navigation.navigate("Posts", { photo, name, currentLocation });
