@@ -1,22 +1,17 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { Feather } from '@expo/vector-icons'; 
+import { createStackNavigator } from "@react-navigation/stack";
+import RegPostsScreen from '../NestedScreens/RegPostsScreen';
+import CommentsScreen from '../NestedScreens/CommentsScreen';
+import MapScreen from '../NestedScreens/MapScreen';
 
-export const PostsScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.user}>Natali Romanova</Text>
-      <Feather name="log-out" size={24} color="black" />
-    </View>
-  );
-};
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    
-  },
-  user: {
-    fontSize: 15,
-  },
-});
+
+export default function PostsScreen() {
+    const NestedStack = createStackNavigator();
+
+    return (
+        <NestedStack.Navigator initialRouteName="Posts">   
+            <NestedStack.Screen name="Posts" component={RegPostsScreen} options={{headerShown: false, title: "Публикации"}}/>
+            <NestedStack.Screen name="Map" component={MapScreen} options={{title: "Карта"}} />
+            <NestedStack.Screen name="Comments" component={CommentsScreen} options={{title: "Комментарии"}} />
+       </NestedStack.Navigator> 
+    );
+}

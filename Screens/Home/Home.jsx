@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ProfileScreen } from "./ProfileScreen";
 import { CreatePostsScreen } from "./CreatePostsScreen";
-import { PostsScreen } from "./PostsScreen";
-import { LogOut } from "../../Components/Logout";
+import PostsScreen from "./PostsScreen";
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
+import { Out } from "../../Components/Out";
+import { Goback } from "../../Components/GoBack";
 
 export default function HomeScreen() {
   const BottomNav = createBottomTabNavigator();
@@ -32,7 +33,7 @@ export default function HomeScreen() {
       <BottomNav.Screen
         options={() => ({
           title: "Публикации",
-          // headerRight: () => <LogOut />,
+          headerRight: () => <Out />,
           tabBarIcon: ({ focused }) => (
             <View style={focused ? styles.tabIconFocused : styles.tabIcon}>
               <SimpleLineIcons
@@ -49,16 +50,17 @@ export default function HomeScreen() {
       <BottomNav.Screen
         options={() => ({
           title: "Создать публикацию",
+          headerLeft: () => <Goback />,
           tabBarIcon: ({ focused }) => (
             <View style={focused ? styles.tabIconFocused : styles.tabIcon}>
               <Feather
                 name="plus"
+                h
                 size={28}
                 color={focused ? "#fff" : "#212121CC"}
               />
             </View>
           ),
-          // headerRight: () => <LogOut />,
         })}
         name="Создать публикацию"
         component={CreatePostsScreen}
@@ -66,6 +68,7 @@ export default function HomeScreen() {
       <BottomNav.Screen
         options={() => ({
           title: "Профиль",
+          headerRight: () => <Out />,
           tabBarIcon: ({ focused }) => (
             <View style={focused ? styles.tabIconFocused : styles.tabIcon}>
               <Feather
@@ -75,7 +78,6 @@ export default function HomeScreen() {
               />
             </View>
           ),
-          // headerRight: () => <LogOut />,
         })}
         name="Профиль"
         component={ProfileScreen}
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 70,
     height: 40,
-    backgroundColor: "#FF6C00", 
+    backgroundColor: "#FF6C00",
     borderRadius: 50,
     padding: 5,
   },
