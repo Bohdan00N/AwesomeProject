@@ -25,7 +25,11 @@ export default function MapScreen() {
         {currentLocation && (
           <Marker
             title="I am here"
-            coordinate={currentLocation}
+            coordinate={{
+              ...currentLocation,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
             description="Hello"
           />
         )}
