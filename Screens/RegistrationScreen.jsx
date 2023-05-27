@@ -16,9 +16,15 @@ import backgroundImage from "../assets/images/backgroundImage.png";
 import Add from "../assets/images/add.svg";
 import Del from "../assets/images/del.svg";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from 'react-redux';
+import { signUp } from "../redux/auth/authOperations";
 
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+};
 export default RegistrationScreen = () => {
-  //
   const navigation = useNavigation();
   const [passwordView, setPasswordView] = useState(true);
   const [avatarSource, setAvatarSource] = useState();
@@ -26,9 +32,7 @@ export default RegistrationScreen = () => {
   const delImg = () => {
     setAvatarSource(null);
   };
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [state, setState] = useState(initialState);
 
   const handlePress = () => {
     setPasswordView(!passwordView);
@@ -66,9 +70,10 @@ export default RegistrationScreen = () => {
   const inputStyles2 = [styles.input, isFocused2 && styles.inputFocused];
 
   const inputStyles3 = [styles.input, isFocused3 && styles.inputFocused];
-
+  const dispatch = useDispatch();
   const onLogin = () => {
-    console.log("Name:", name, "Email:", email, "Password:", password);
+    dispatch(signUp(state));
+    setState(initialState);
   };
 
   return (
@@ -98,8 +103,10 @@ export default RegistrationScreen = () => {
                 placeholderTextColor="#BDBDBD"
                 onFocus={handleFocus1}
                 onBlur={handleBlur1}
-                value={name}
-                onChangeText={setName}
+                value={state.name}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, name: value }))
+                }
               />
               <TextInput
                 style={inputStyles2}
@@ -107,8 +114,10 @@ export default RegistrationScreen = () => {
                 placeholderTextColor="#BDBDBD"
                 onFocus={handleFocus2}
                 onBlur={handleBlur2}
-                value={email}
-                onChangeText={setEmail}
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
               />
               <View>
                 <TextInput
@@ -119,8 +128,10 @@ export default RegistrationScreen = () => {
                   onBlur={handleBlur3}
                   autoComplete="password"
                   secureTextEntry={passwordView}
-                  value={password}
-                  onChangeText={setPassword}
+                  value={state.password}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, password: value }))
+                  }
                 ></TextInput>
                 <Text
                   style={styles.showPassword}

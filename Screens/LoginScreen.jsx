@@ -11,18 +11,23 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-
 import backgroundImage from "../assets/images/backgroundImage.png";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { signIn } from "../redux/auth/authOperations";
+
+const initialState = {
+  email: "",
+  password: "",
+};
+
 export default LoginScreen = () => {
   const navigation = useNavigation();
-
+  const [state, setState] = useState(initialState);
   const [passwordView, setPasswordView] = useState(true);
   const handlePress = () => {
     setPasswordView(!passwordView);
   };
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
@@ -45,9 +50,13 @@ export default LoginScreen = () => {
 
   const inputStyles2 = [styles.input, isFocused2 && styles.inputFocused];
 
+  const dispatch = useDispatch();
+
   const onLogin = () => {
-    console.log("Email:", email, "Password:", password);
+    dispatch(signIn(state));
+    setState(initialState);
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -63,8 +72,10 @@ export default LoginScreen = () => {
                 placeholderTextColor="#BDBDBD"
                 onFocus={handleFocus1}
                 onBlur={handleBlur1}
-                value={email}
-                onChangeText={setEmail}
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
               />
               <View>
                 <TextInput
@@ -75,8 +86,10 @@ export default LoginScreen = () => {
                   onBlur={handleBlur2}
                   autoComplete="password"
                   secureTextEntry={passwordView}
-                  value={password}
-                  onChangeText={setPassword}
+                  value={state.password}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, password: value }))
+                  }
                 ></TextInput>
                 <Text
                   style={styles.showPassword}

@@ -17,14 +17,12 @@ export default function RegPostsScreen() {
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
   const { params } = useRoute();
-//   const [currentLocation, setCurrentLocation] = useState(null);
 
   useEffect(() => {
-      if (params) {
-          setPosts((prevState) => [...prevState, params]);
-        }console.log(params);
-    }, [params]);
-    
+    if (params) {
+      setPosts((prevState) => [...prevState, params]);
+    }
+  }, [params]);
 
   return (
     <View style={styles.container}>
@@ -41,7 +39,7 @@ export default function RegPostsScreen() {
         renderItem={({ item }) => (
           <View style={styles.postCard}>
             <View style={styles.post}>
-              <Image style={{ flex: 1 }} source={ item.photo }></Image>
+              <Image style={{ flex: 1 }} source={item.photo}></Image>
             </View>
             <Text style={styles.titlePost}>{item.name}</Text>
             <View style={styles.postInfo}>
@@ -54,7 +52,11 @@ export default function RegPostsScreen() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.commentsContainer}
-                onPress={() => navigation.navigate("Map", { currentLocation: params.currentLocation })}
+                onPress={() =>
+                  navigation.navigate("Map", {
+                    currentLocation: params.currentLocation,
+                  })
+                }
               >
                 <Ionicons
                   name="ios-location-outline"

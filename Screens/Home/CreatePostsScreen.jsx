@@ -57,7 +57,7 @@ export function CreatePostsScreen() {
   const handleReset = () => {
     setName("");
     setPhoto("");
-    };
+  };
 
   const handleSubmit = () => {
     navigation.navigate("Posts", { photo, name, currentLocation });
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
+    borderRadius: 0,
   },
   flipContainer: {
     position: "absolute",
