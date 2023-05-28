@@ -43,7 +43,6 @@ export const signIn = createAsyncThunk(
         userId: user.uid,
         name: user.displayName,
         email: user.email,
-        // photo: user.photoURL,
       };
       return userData;
     } catch (error) {

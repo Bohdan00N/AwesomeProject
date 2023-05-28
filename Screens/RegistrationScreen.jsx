@@ -71,9 +71,11 @@ export default RegistrationScreen = () => {
 
   const inputStyles3 = [styles.input, isFocused3 && styles.inputFocused];
   const dispatch = useDispatch();
+  const isButtonDisabled = !(state.email && state.password &&state.name);
   const onLogin = () => {
     dispatch(signUp(state));
     setState(initialState);
+    navigation.navigate('Home');
   };
 
   return (
@@ -142,7 +144,8 @@ export default RegistrationScreen = () => {
                 </Text>
               </View>
 
-              <Pressable style={styles.button} onPress={onLogin}>
+              <Pressable style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
+      onPress={isButtonDisabled ? undefined : onLogin}>
                 <Text style={styles.textButton}>Зарегистрироваться</Text>
               </Pressable>
               <Pressable onPress={() => navigation.navigate("Login")}>
@@ -178,6 +181,9 @@ const styles = StyleSheet.create({
     height: 549,
     alignItems: "center",
   },
+  buttonDisabled:{
+    backgroundColor: "transparent",
+      },
   tinyAvatar: {
     width: 120,
     height: 120,

@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
   },
   login: {
     fontSize: 13,
-    fontWeight: 700,
+    fontFamily: "Roboto-Bold",
     color: "#212121",
   },
   email: {
     fontSize: 11,
-    fontWeight: 400,
+    fontFamily: "Roboto-Medium",
     color: "#212121",
   },
   post: {

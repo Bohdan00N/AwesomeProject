@@ -11,7 +11,7 @@ import {
 } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authSlice } from "./auth/authReducer";
-// import { composeWithDevTools } from 'redux-devtools-extension';
+
 
 
 const rootReducer = combineReducers({
@@ -33,6 +33,6 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-    // enhancers: [composeWithDevTools()],
+   
 });
 export const persistor = persistStore(store);

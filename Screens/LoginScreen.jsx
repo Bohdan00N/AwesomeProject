@@ -51,10 +51,11 @@ export default LoginScreen = () => {
   const inputStyles2 = [styles.input, isFocused2 && styles.inputFocused];
 
   const dispatch = useDispatch();
-
+  const isButtonDisabled = !(state.email && state.password);
   const onLogin = () => {
     dispatch(signIn(state));
     setState(initialState);
+    navigation.navigate('Home');
   };
 
   return (
@@ -100,7 +101,9 @@ export default LoginScreen = () => {
                 </Text>
               </View>
 
-              <Pressable style={styles.button} onPress={onLogin}>
+              <Pressable style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
+      onPress={isButtonDisabled ? undefined : onLogin}
+      >
                 <Text style={styles.textButton}>Войти</Text>
               </Pressable>
               <Pressable onPress={() => navigation.navigate("Registration")}>
@@ -142,6 +145,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginBottom: 33,
     fontFamily: "Roboto-Medium",
+  },
+  buttonDisabled:{
+backgroundColor: "transparent",
   },
   input: {
     fontFamily: "Roboto-Regular",
