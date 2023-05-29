@@ -14,7 +14,7 @@ import {
 import backgroundImage from "../assets/images/backgroundImage.png";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { signIn } from "../redux/auth/authOperations";
+import { loginThunk } from "../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -53,9 +53,8 @@ export default LoginScreen = () => {
   const dispatch = useDispatch();
   const isButtonDisabled = !(state.email && state.password);
   const onLogin = () => {
-    dispatch(signIn(state));
+    dispatch(loginThunk(state));
     setState(initialState);
-    navigation.navigate('Home');
   };
 
   return (

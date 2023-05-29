@@ -1,15 +1,22 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ProfileScreen } from "./ProfileScreen";
+import ProfileScreen from "./ProfileScreen";
 import { CreatePostsScreen } from "./CreatePostsScreen";
 import PostsScreen from "./PostsScreen";
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 import { Out } from "../../Components/Out";
 import { Goback } from "../../Components/GoBack";
+import { logOutThunk } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function HomeScreen() {
+function HomeScreen() {
   const BottomNav = createBottomTabNavigator();
+  const dispatch = useDispatch();
 
+  function handleHeaderRight() {
+    dispatch(logOutThunk());
+  }
   return (
     <BottomNav.Navigator
       initialRouteName="Posts"
@@ -33,7 +40,15 @@ export default function HomeScreen() {
       <BottomNav.Screen
         options={() => ({
           title: "Публикации",
-          headerRight: () => <Out />,
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ padding: 10 }}
+              activeOpacity={0.8}
+              onPress={handleHeaderRight}
+            >
+              <Out />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({ focused }) => (
             <View style={focused ? styles.tabIconFocused : styles.tabIcon}>
               <SimpleLineIcons
@@ -68,7 +83,7 @@ export default function HomeScreen() {
       <BottomNav.Screen
         options={() => ({
           title: "Профиль",
-          headerRight: () => <Out />,
+
           tabBarIcon: ({ focused }) => (
             <View style={focused ? styles.tabIconFocused : styles.tabIcon}>
               <Feather
@@ -85,6 +100,7 @@ export default function HomeScreen() {
     </BottomNav.Navigator>
   );
 }
+export default HomeScreen;
 const styles = StyleSheet.create({
   tabIcon: {
     alignItems: "center",

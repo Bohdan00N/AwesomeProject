@@ -4,53 +4,82 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 
 import { auth } from "../../firebase/config";
 
-export const signUp = createAsyncThunk(
-  "auth/signUp",
-  async ({ name, email, password }, thunkAPI) => {
+export const registerThunk = createAsyncThunk(
+  "auth/register",
+  async (data, thunkAPI) => {
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      await updateProfile(user, { displayName: name });
-      const userData = {
-        userId: user.uid,
-        name: user.displayName,
-        email: user.email,
-        // photo: photoUrl,
-        // password,
-      };
-      console.log(userData);
-      return userData;
+       const { email, password, name  } = data;
+       const result = await createUserWithEmailAndPassword(auth, email, password);
+       result &&
+          (await updateProfile(auth.currentUser, {
+             displayName: name,
+          }));
+          const { displayName, uid, email:currentEmail } = await auth.currentUser;
+            return { displayName, uid, currentEmail };
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+       console.log('error', error.message);
+       return thunkAPI.rejectWithValue(e.message);
     }
-  }
+ }
 );
 
-export const signIn = createAsyncThunk(
-  "auth/signIn",
+export const loginThunk = createAsyncThunk(
+  "auth/login",
   async ({ email, password }, thunkAPI) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      const userData = {
-        userId: user.uid,
+      console.log("user", user);
+      const loginUser = {
         name: user.displayName,
+        uid: user.uid,
         email: user.email,
       };
-      return userData;
+      return loginUser;
     } catch (error) {
-      console.log("error.code", error.code);
+      console.log("error", error);
       console.log("error.message", error.message);
-      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-export const authSignOut = () => async (dispatch, getState) => {};
+export const logOutThunk = createAsyncThunk(
+  "auth/logOut",
+  async (__i, thunkAPI) => {
+    try {
+      await signOut(auth);
+      return;
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.message", error.message);
+    }
+  }
+);
+
+export const authStateChangeUseThunk = createAsyncThunk(
+  "auth/change",
+  async (__i, thunkAPI) => {
+    try {
+      await onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const loginUser = {
+            name: user.displayName,
+            uid: user.uid,
+            email: user.email,
+            isUser: true,
+          };
+          return loginUser;
+        } else {
+          return;
+        }
+      });
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.message", error.message);
+    }
+  }
+);

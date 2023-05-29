@@ -16,8 +16,8 @@ import backgroundImage from "../assets/images/backgroundImage.png";
 import Add from "../assets/images/add.svg";
 import Del from "../assets/images/del.svg";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from 'react-redux';
-import { signUp } from "../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
+import { registerThunk } from "../redux/auth/authOperations";
 
 const initialState = {
   name: "",
@@ -71,11 +71,10 @@ export default RegistrationScreen = () => {
 
   const inputStyles3 = [styles.input, isFocused3 && styles.inputFocused];
   const dispatch = useDispatch();
-  const isButtonDisabled = !(state.email && state.password &&state.name);
+  const isButtonDisabled = !(state.email && state.password && state.name);
   const onLogin = () => {
-    dispatch(signUp(state));
+    dispatch(registerThunk(state));
     setState(initialState);
-    navigation.navigate('Home');
   };
 
   return (
@@ -144,8 +143,13 @@ export default RegistrationScreen = () => {
                 </Text>
               </View>
 
-              <Pressable style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
-      onPress={isButtonDisabled ? undefined : onLogin}>
+              <Pressable
+                style={[
+                  styles.button,
+                  isButtonDisabled && styles.buttonDisabled,
+                ]}
+                onPress={isButtonDisabled ? undefined : onLogin}
+              >
                 <Text style={styles.textButton}>Зарегистрироваться</Text>
               </Pressable>
               <Pressable onPress={() => navigation.navigate("Login")}>
@@ -181,9 +185,9 @@ const styles = StyleSheet.create({
     height: 549,
     alignItems: "center",
   },
-  buttonDisabled:{
+  buttonDisabled: {
     backgroundColor: "transparent",
-      },
+  },
   tinyAvatar: {
     width: 120,
     height: 120,
